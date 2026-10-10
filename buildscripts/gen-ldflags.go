@@ -32,12 +32,17 @@ import (
 func genLDFlags(version string) string {
 	releaseTag, date := releaseTag(version)
 	copyrightYear := strconv.Itoa(date.Year())
+	commit := commitID()
+	shortCommit := commit
+	if len(shortCommit) > 12 {
+		shortCommit = shortCommit[:12]
+	}
 	ldflagsStr := "-s -w"
 	ldflagsStr += " -X github.com/minio/minio/cmd.Version=" + version
 	ldflagsStr += " -X github.com/minio/minio/cmd.CopyrightYear=" + copyrightYear
 	ldflagsStr += " -X github.com/minio/minio/cmd.ReleaseTag=" + releaseTag
-	ldflagsStr += " -X github.com/minio/minio/cmd.CommitID=" + commitID()
-	ldflagsStr += " -X github.com/minio/minio/cmd.ShortCommitID=" + commitID()[:12]
+	ldflagsStr += " -X github.com/minio/minio/cmd.CommitID=" + commit
+	ldflagsStr += " -X github.com/minio/minio/cmd.ShortCommitID=" + shortCommit
 	ldflagsStr += " -X github.com/minio/minio/cmd.GOPATH=" + os.Getenv("GOPATH")
 	ldflagsStr += " -X github.com/minio/minio/cmd.GOROOT=" + os.Getenv("GOROOT")
 	return ldflagsStr
@@ -72,6 +77,12 @@ func releaseTag(version string) (string, time.Time) {
 
 // commitID returns the abbreviated commit-id hash of the last commit.
 func commitID() string {
+	// Allow overriding from the environment, useful for build
+	// environments (e.g. Docker builds) without a git checkout.
+	if v := os.Getenv("MINIO_COMMIT_ID"); v != "" {
+		return strings.TrimSpace(v)
+	}
+
 	// git log --format="%H" -n1
 	var (
 		commit []byte
@@ -88,7 +99,18 @@ func commitID() string {
 }
 
 func commitTime() time.Time {
-	// git log --format=%cD -n1
+	// Allow overriding from the environment, useful for build
+	// environments (e.g. Docker builds) without a git checkout.
+	if v := os.Getenv("MINIO_COMMIT_TIME"); v != "" {
+		t, err := time.Parse(time.RFC3339, strings.TrimSpace(v))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error parsing MINIO_COMMIT_TIME: ", err)
+			os.Exit(1)
+		}
+		return t.UTC()
+	}
+
+	// git log --format=%cI -n1
 	var (
 		commitUnix []byte
 		err        error

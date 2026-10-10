@@ -806,10 +806,11 @@ func serverHandleEnvVars() {
 		updateDomainIPs(domainIPs)
 	}
 
-	// In place update is true by default if the MINIO_UPDATE is not set
-	// or is not set to 'off', if MINIO_UPDATE is set to 'off' then
-	// in-place update is off.
-	globalInplaceUpdateDisabled = strings.EqualFold(env.Get(config.EnvUpdate, config.EnableOn), config.EnableOff)
+	// In-place update and update checks are disabled by default in this
+	// fork - releases are published on GitHub Releases of this repository,
+	// not on dl.min.io. Set MINIO_UPDATE=on to re-enable upstream-style
+	// in-place update behavior.
+	globalInplaceUpdateDisabled = strings.EqualFold(env.Get(config.EnvUpdate, config.EnableOff), config.EnableOff)
 
 	// Check if the supported credential env vars,
 	// "MINIO_ROOT_USER" and "MINIO_ROOT_PASSWORD" are provided

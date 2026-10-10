@@ -1,7 +1,12 @@
 > [!NOTE]
-> **THIS REPOSITORY IS NO LONGER MAINTAINED.**
+> **This is a maintained fork of MinIO.** Upstream MinIO has moved to
+> maintenance mode (source-only, no more community binary releases). This
+> fork (flexdeviser/minio) is kept up to date for bug fixes and CVEs, with
+> its own release pipeline publishing binaries to GitHub Releases and
+> container images to `ghcr.io/flexdeviser/minio`. See [RELEASING.md](RELEASING.md)
+> for the release process.
 >
-> **Alternatives:**
+> **Upstream alternatives:**
 > - **[AIStor Free](https://min.io/download)** — Full-featured, standalone edition for community use (free license)
 > - **[AIStor Enterprise](https://min.io/pricing)** — Distributed edition with commercial support
 
@@ -34,35 +39,22 @@ All support is provided on a best-effort basis through Github and our [Slack](ht
 
 MinIO [AIStor](https://www.min.io/product/aistor) includes enterprise-grade support and licensing for workloads which require commercial or proprietary usage and production-level SLA/SLO-backed support. For more information, [reach out for a quote](https://min.io/pricing).
 
-## Source-Only Distribution
+## Releases
 
-**Important:** The MinIO community edition is now distributed as source code only. We will no longer provide pre-compiled binary releases for the community version.
+The upstream MinIO community edition is distributed as source code only. This fork ships its own releases:
 
-### Installing Latest MinIO Community Edition
+- **Binaries:** GitHub Releases of this repository (`flexdeviser/minio`), tagged `RELEASE.*`
+- **Container images:** `ghcr.io/flexdeviser/minio:<tag>` and `:latest`
+- **Docker image:** build from the provided Dockerfile
 
-To use MinIO community edition, you have two options:
-
-1. **Install from source** using `go install github.com/minio/minio@latest` (recommended)
-2. **Build a Docker image** from the provided Dockerfile
-
-See the sections below for detailed instructions on each method.
-
-### Legacy Binary Releases
-
-Historical pre-compiled binary releases remain available for reference but are no longer maintained:
-
-- GitHub Releases: https://github.com/minio/minio/releases
-- Direct downloads: https://dl.min.io/server/minio/release/
-
-**These legacy binaries will not receive updates.** We strongly recommend using source builds for access to the latest features, bug fixes, and security updates.
-
-## Install from Source
+### Installing from Source
 
 Use the following commands to compile and run a standalone MinIO server from source.
 If you do not have a working Golang environment, please follow [How to install Golang](https://golang.org/doc/install). Minimum version required is [go1.24](https://golang.org/dl/#stable)
 
 ```sh
-go install github.com/minio/minio@latest
+make
+./minio server /path/to/data
 ```
 
 You can alternatively run `go build` and use the `GOOS` and `GOARCH` environment variables to control the OS and architecture target.
