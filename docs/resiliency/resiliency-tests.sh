@@ -393,7 +393,7 @@ function test_resiliency_healing_inlined_metadata() {
 
 function main() {
 	if [ ! -f ./mc ]; then
-		wget -q https://dl.minio.io/client/mc/release/linux-amd64/mc && chmod +x ./mc
+		wget -q -O ./mc https://github.com/minio/mc/releases/download/RELEASE.2025-08-13T08-35-41Z/mc.linux-amd64.RELEASE.2025-08-13T08-35-41Z && chmod +x ./mc
 	fi
 
 	export MC_HOST_myminio=http://minioadmin:minioadmin@localhost:9000

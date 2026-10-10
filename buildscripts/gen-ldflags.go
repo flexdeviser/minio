@@ -64,7 +64,11 @@ func releaseTag(version string) (string, time.Time) {
 	relTag = strings.Replace(relTag, ":", "-", -1)
 	t, err := time.Parse("2006-01-02T15-04-05Z", relTag)
 	if err != nil {
-		panic(err)
+		// Fall back to a stable development tag when the version is not in
+		// the standard release format (e.g. docker builds where the VERSION
+		// build-arg is empty, like docs/resiliency's docker-compose).
+		relTag = "GOGIT"
+		t = time.Unix(0, 0).UTC()
 	}
 	relTag = strings.Replace(relTag, ",", "", -1)
 	relTag = relPrefix + "." + relTag
@@ -91,8 +95,9 @@ func commitID() string {
 	cmdName := "git"
 	cmdArgs := []string{"log", "--format=%H", "-n1"}
 	if commit, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error generating git commit-id: ", err)
-		os.Exit(1)
+		// No git checkout in the build context (e.g. docker builds), fall
+		// back to a placeholder instead of failing the build.
+		return "unknown"
 	}
 
 	return strings.TrimSpace(string(commit))
@@ -118,14 +123,12 @@ func commitTime() time.Time {
 	cmdName := "git"
 	cmdArgs := []string{"log", "--format=%cI", "-n1"}
 	if commitUnix, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error generating git commit-time: ", err)
-		os.Exit(1)
+		return time.Unix(0, 0).UTC()
 	}
 
 	t, err := time.Parse(time.RFC3339, strings.TrimSpace(string(commitUnix)))
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error generating git commit-time: ", err)
-		os.Exit(1)
+		return time.Unix(0, 0).UTC()
 	}
 
 	return t.UTC()
