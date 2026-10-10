@@ -27,13 +27,13 @@ Tags do not have to be created manually with exact timestamps - the canonical wa
 ```sh
 git checkout master
 git pull origin master
-# Find the UTC commit time of the tip of master
-COMMIT_TIME=$(git log -1 --format=%cI)
-# Convert RFC3339 (2026-10-10T12:00:00Z) -> tag format (2026-10-10T12-00-00Z)
-TAG="RELEASE.$(echo "$COMMIT_TIME" | sed -E 's/^([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}):([0-9]{2}):([0-9]{2})Z$/\1-\2-\3Z/')"
+# Convert the commit time to UTC, then to the tag format (RELEASE.<...>Z)
+TAG="RELEASE.$(date -u -r "$(git log -1 --format=%ct)" '+%Y-%m-%dT%H-%M-%SZ')"
 git tag -a "$TAG" -m "Release $TAG"
 git push origin "$TAG"
 ```
+
+(GNU `date`: replace `-r` with `-d @`.)
 
 ### 3. Pipeline runs automatically
 
