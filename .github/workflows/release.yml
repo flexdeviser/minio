@@ -69,9 +69,12 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
         run: |
           set -euo pipefail
+          # gen-ldflags must run on the host, not for the target GOOS/GOARCH,
+          # otherwise go run tries to execute a cross-compiled binary.
           LDFLAGS="$(MINIO_RELEASE=RELEASE \
             MINIO_COMMIT_ID="${GITHUB_SHA}" \
             MINIO_COMMIT_TIME="$(git log -1 --format=%cI)" \
+            GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" \
             go run buildscripts/gen-ldflags.go "${VERSION}")"
           EXT=""
           if [ "${GOOS}" = "windows" ]; then EXT=".exe"; fi
