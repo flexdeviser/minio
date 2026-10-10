@@ -1,10 +1,14 @@
 > [!NOTE]
-> **This is a maintained fork of MinIO.** Upstream MinIO has moved to
-> maintenance mode (source-only, no more community binary releases). This
-> fork (flexdeviser/minio) is kept up to date for bug fixes and CVEs, with
-> its own release pipeline publishing binaries to GitHub Releases and
-> container images to `ghcr.io/flexdeviser/minio`. See [RELEASING.md](RELEASING.md)
-> for the release process.
+> **This is a personal, AI-assist-maintained fork of MinIO.** Upstream MinIO
+> moved to maintenance mode (source-only, no more community binary releases).
+> This fork (`flexdeviser/minio`) exists for **personal use only** and is
+> maintained in **maintenance mode**: it will **only fix bugs and CVEs**, and
+> deliberately ships **no new features**. Changes are made with the help of an
+> AI coding agent and reviewed by the repo owner before release.
+>
+> Releases are published via an automated pipeline to GitHub Releases
+> (binaries + sha256) and container images on `ghcr.io/flexdeviser/minio`.
+> See [RELEASING.md](RELEASING.md) for the release process.
 >
 > **Upstream alternatives:**
 > - **[AIStor Free](https://min.io/download)** — Full-featured, standalone edition for community use (free license)
@@ -41,7 +45,9 @@ MinIO [AIStor](https://www.min.io/product/aistor) includes enterprise-grade supp
 
 ## Releases
 
-The upstream MinIO community edition is distributed as source code only. This fork ships its own releases:
+This fork is maintained for **personal use only** and is kept in maintenance
+mode (bugs and CVEs only, no new features). Releases are built automatically
+when a `RELEASE.*` tag is pushed:
 
 - **Binaries:** GitHub Releases of this repository (`flexdeviser/minio`), tagged `RELEASE.*`
 - **Container images:** `ghcr.io/flexdeviser/minio:<tag>` and `:latest`
