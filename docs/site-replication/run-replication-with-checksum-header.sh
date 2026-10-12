@@ -71,7 +71,7 @@ echo "done"
 
 if [ ! -f ./mc ]; then
 	echo -n "Downloading MinIO client ..."
-	wget -O mc https://dl.min.io/client/mc/release/linux-amd64/mc &&
+	wget -O mc https://github.com/minio/mc/releases/download/RELEASE.2025-08-13T08-35-41Z/mc.linux-amd64.RELEASE.2025-08-13T08-35-41Z &&
 		chmod +x mc
 	echo "done"
 fi

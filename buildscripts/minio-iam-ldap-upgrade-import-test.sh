@@ -14,7 +14,7 @@
 # `_MINIO_LDAP_TEST_SERVER`.
 
 OLD_VERSION=RELEASE.2024-03-26T22-10-45Z
-OLD_BINARY_LINK=https://dl.min.io/server/minio/release/linux-amd64/archive/minio.${OLD_VERSION}
+OLD_BINARY_LINK=https://github.com/minio/minio/releases/download/${OLD_VERSION}/minio.linux-amd64.${OLD_VERSION}
 
 __init__() {
 	if which curl &>/dev/null; then

@@ -20,7 +20,7 @@ function cleanup() {
 cleanup
 
 if [ ! -f ./mc ]; then
-	wget --quiet -O mc https://dl.minio.io/client/mc/release/linux-amd64/mc &&
+	wget --quiet -O mc https://github.com/minio/mc/releases/download/RELEASE.2025-08-13T08-35-41Z/mc.linux-amd64.RELEASE.2025-08-13T08-35-41Z &&
 		chmod +x mc
 fi
 
